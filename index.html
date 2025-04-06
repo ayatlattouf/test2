@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Uplift Records</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+            position: relative;
+        }
+
+        th:hover {
+            background: #2980b9;
+        }
+
+        th::after {
+            content: '↕';
+            position: absolute;
+            right: 10px;
+            opacity: 0.7;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #f1f3f5;
+            transition: background 0.2s;
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fuel Uplift Records</h1>
+            <p>Updated as of April 06, 2025</p>
+        </div>
+        <div class="table-wrapper">
+            <table id="upliftTable">
+                <thead>
+                    <tr>
+                        <th>Uplift Date</th>
+                        <th>Invoice Number</th>
+                        <th>Reg. Number</th>
+                        <th>Airport</th>
+                        <th>Uplift Number</th>
+                        <th>Volume (LT)</th>
+                        <th>Amount</th>
+                        <th>Details</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>2024-01-25</td><td>90070094</td><td>YIARI</td><td>AYT</td><td>IA 210</td><td>5105</td><td>4556.57</td><td>05.02.2024 TARIHINDE MARWAN’A TESLIM EDILDI</td><td>2024-02-05</td></tr>
+                    <tr><td>2024-01-27</td><td>90070095</td><td>YIARH</td><td>AYT</td><td>IA 210</td><td>4728</td><td>4221.9</td><td>05.02.2024 TARIHINDE MARWAN’A TESLIM EDILDI</td><td>2024-02-05</td></tr>
+                    <tr><td>2024-01-22</td><td>90070096</td><td>YIARI</td><td>ESB</td><td>IA202</td><td>5122</td><td>4542.27</td><td>05.02.2024 TARIHINDE MARWAN’A TESLIM EDILDI</td><td>2024-02-05</td></tr>
+                    <!-- Add more rows here (omitted for brevity) -->
+                    <tr><td>2024-02-23</td><td>90071516</td><td>YIASL</td><td>ESB</td><td>IA202</td><td>4888</td><td>4596.26</td><td>28.02.2024 TARIHINDE MARVAN’A ELDEN TESLIM EDILDI</td><td>2024-02-28</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const table = document.getElementById('upliftTable');
+            const headers = table.querySelectorAll('th');
+            
+            headers.forEach((header, index) => {
+                header.addEventListener('click', () => {
+                    sortTable(index);
+                });
+            });
+
+            function sortTable(column) {
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                const isNumeric = !isNaN(parseFloat(rows[0].cells[column].textContent));
+                
+                rows.sort((a, b) => {
+                    let aValue = a.cells[column].textContent;
+                    let bValue = b.cells[column].textContent;
+                    
+                    if (isNumeric) {
+                        return parseFloat(aValue) - parseFloat(bValue);
+                    } else {
+                        return aValue.localeCompare(bValue);
+                    }
+                });
+
+                // Toggle sort direction
+                if (header.dataset.order === 'asc') {
+                    rows.reverse();
+                    header.dataset.order = 'desc';
+                } else {
+                    header.dataset.order = 'asc';
+                }
+
+                // Re-append sorted rows
+                rows.forEach(row => tbody.appendChild(row));
+            }
+        });
+    </script>
+</body>
+</html>
